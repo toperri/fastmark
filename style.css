@@ -1,0 +1,37 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    width: 100%;
+    background-color: hsl(0, 0%, 94%);
+    font-family: "Arial", sans-serif;
+    color: gray;
+    user-select: none;
+}
+
+.gr {
+    text-align: center;
+    background-color: rgba(136, 136, 136, 0.4);
+    color: rgb(129, 129, 129);
+    padding: 30px;
+}
+
+.betaNotice {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    width: 100%;
+    height: 30px;
+    border-radius: 5px;
+    color: #8b8b8b;
+    font-size: 12px;
+    text-align: left;
+    color: rgb(129, 129, 129);
+}
+
+.betaNotice > p > a {
+    color: rgb(129, 129, 129);
+}

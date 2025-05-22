@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fastmark</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <h1>Fastmark Setup</h1>
+    <p>Please setup your Fastmark. This page will only open on the first time here.</p>
+    <hr>
+    <p>Artist's name</p>
+    <input type="text" id="artist" placeholder="Your name here">
+    <br>
+    <p>Do not copy message</p>
+    <select name="message" id="message">
+        <option value="COPY FORBIDDEN">COPY FORBIDDEN</option>
+        <option value="DO NOT COPY">DO NOT COPY</option>
+        <option value="COPYING PROHIBITED">COPYING PROHIBITED</option>
+        <option value="DO NOT TRACE">DO NOT TRACE</option>
+    </select>
+    <br>
+    <p>Watermark style</p>
+    <select name="style" id="style">
+        <option value="INV">INVASIVE</option>
+        <option value="NINV">NON-INVASIVE</option>
+    </select>
+    <br>
+    <p>Watermark color <i>(keep in mind the program applies a trasparency filter to all of the watermarks)</i></p>
+    <input type="color" name="color" id="color" value="#000000">
+    <p></p>
+    <hr>
+    <button onclick="save()">Done!</button>
+    <div class="madeWith">
+        <p>tool by toperri</p>
+    </div>
+</body>
+
+<script>
+    function save() {
+        const artist = document.getElementById("artist").value;
+        const message = document.getElementById("message").value;
+        const style = document.getElementById("style").value;
+        const color = document.getElementById("color").value;
+
+        if (artist === "") {
+            alert("Please enter your name.");
+            return;
+        }
+
+        const data = {
+            artist: artist,
+            message: message,
+            style: style,
+            color: color
+        };
+
+        var a = new Audio("donedeedone.wav");
+        a.play();
+        a.onended = function() {
+            localStorage.setItem("fastmark", JSON.stringify(data));
+            window.location.href = "index.html";
+        };
+    }
+</script>
+</html>
