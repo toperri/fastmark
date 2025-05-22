@@ -19,6 +19,10 @@
         <option value="DO NOT COPY">DO NOT COPY</option>
         <option value="COPYING PROHIBITED">COPYING PROHIBITED</option>
         <option value="DO NOT TRACE">DO NOT TRACE</option>
+        <option value="DO NOT STEAL">DO NOT STEAL</option>
+        <option value="DO NOT REPOST">DO NOT REPOST</option>
+        <option value="NO AI TRAINING">NO AI TRAINING</option>
+        <option value="custom">Custom...</option>
     </select>
     <br>
     <p>Watermark style</p>
@@ -51,7 +55,7 @@
 
         const data = {
             artist: artist,
-            message: message,
+            message: (message === "custom") ? prompt("Enter your custom message:") : message,
             style: style,
             color: color
         };

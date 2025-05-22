@@ -85,7 +85,7 @@ async function imagejs(url) {
 
     canvas.toBlob(blob => {
         const url = URL.createObjectURL(blob);
-        window.open(url, '_blank');
+        window.location.replace(url);
         setTimeout(() => URL.revokeObjectURL(url), 10000);
     }, 'image/png');
 
