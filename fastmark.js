@@ -115,3 +115,8 @@ document.body.addEventListener('keydown', (event) => {
         window.location.href = 'setup.html';
     }
 });
+
+if (localStorage.getItem('fastmark') == null) {
+    window.alert('Welcome! Let\'s set up your FastMark settings.');
+    window.location.href = 'setup.html';
+}
