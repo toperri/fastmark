@@ -14,7 +14,7 @@
     <input type="text" id="artist" placeholder="Your name here">
     <br>
     <p>Do not copy message</p>
-    <select name="message" id="message">
+    <select name="message" id="message" oninput="check()">
         <option value="COPY FORBIDDEN">COPY FORBIDDEN</option>
         <option value="DO NOT COPY">DO NOT COPY</option>
         <option value="COPYING PROHIBITED">COPYING PROHIBITED</option>
@@ -22,31 +22,49 @@
         <option value="DO NOT STEAL">DO NOT STEAL</option>
         <option value="DO NOT REPOST">DO NOT REPOST</option>
         <option value="NO AI TRAINING">NO AI TRAINING</option>
-        <option value="custom">Custom...</option>
+        <option value="custom" id="custom">My custom message...</option>
     </select>
     <br>
-    <p>Watermark style</p>
+    <p><b>Watermark info</b></p>
+    <p>Style</p>
     <select name="style" id="style">
         <option value="INV">INVASIVE</option>
         <option value="NINV">NON-INVASIVE</option>
     </select>
     <br>
-    <p>Watermark color <i>(keep in mind the program applies a trasparency filter to all of the watermarks)</i></p>
+    <p>Color</p>
     <input type="color" name="color" id="color" value="#000000">
-    <p></p>
+    <p>Trasparency</p>
+    <input type="range" id="transparency" name="transparency" min="0" max="100" value="50">
     <hr>
     <button onclick="save()">Done!</button>
+    <button onclick="openPreview()">Open preview window</button>
     <div class="madeWith">
         <p>tool by toperri</p>
     </div>
 </body>
 
+<script src="image.min.js"></script>
+
 <script>
-    function save() {
+    function check() {
+        const message = document.getElementById("message").value;
+        if (message === "custom") {
+            const customMessage = prompt("Enter your custom message:").toUpperCase();
+            if (customMessage) {
+                document.getElementById("custom").value = customMessage;
+                document.getElementById("custom").innerText = customMessage;
+            } else {
+                document.getElementById("message").value = "COPY FORBIDDEN";
+            }
+        }
+    }
+    function openPreview() {
         const artist = document.getElementById("artist").value;
         const message = document.getElementById("message").value;
         const style = document.getElementById("style").value;
         const color = document.getElementById("color").value;
+        const transparency = document.getElementById("transparency").value;
 
         if (artist === "") {
             alert("Please enter your name.");
@@ -55,9 +73,33 @@
 
         const data = {
             artist: artist,
-            message: (message === "custom") ? prompt("Enter your custom message:") : message,
+            message: message,
             style: style,
-            color: color
+            color: color,
+            transparency: transparency
+        };
+
+        var win = window.open("index.html?previewInfo=" + btoa(JSON.stringify(data)), "_blank");
+    }
+
+    function save() {
+        const artist = document.getElementById("artist").value;
+        const message = document.getElementById("message").value;
+        const style = document.getElementById("style").value;
+        const color = document.getElementById("color").value;
+        const transparency = document.getElementById("transparency").value;
+
+        if (artist === "") {
+            alert("Please enter your name.");
+            return;
+        }
+
+        const data = {
+            artist: artist,
+            message: message,
+            style: style,
+            color: color,
+            transparency: transparency
         };
 
         var a = new Audio("donedeedone.wav");

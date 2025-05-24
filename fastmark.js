@@ -1,4 +1,6 @@
 // fastmark
+var params = new URLSearchParams(window.location.search);
+
 
 function hexToRgba(hex, alpha = 1) {
     hex = hex.replace(/^#/, '');
@@ -13,9 +15,8 @@ function hexToRgba(hex, alpha = 1) {
     return `rgba(${r},${g},${b},${alpha})`;
 }
 
-async function imagejs(url) {
+async function imagejs(url, config) {
     let image = await IJS.Image.load(url);
-    let config = localStorage.getItem('fastmark');
 
     const canvas = document.createElement('canvas');
     canvas.width = image.width;
@@ -42,7 +43,7 @@ async function imagejs(url) {
                 }
                 ctx.font = `${fontSize}px Arial`;
                 ctx.globalAlpha = 0.5;
-                ctx.fillStyle = hexToRgba(config.color, 0.6);
+                ctx.fillStyle = hexToRgba(config.color, config.transparency);
                 const lineHeight = fontSize * 1.2;
                 const startY = Math.round(image.height / 10);
                 const startX = Math.round(image.width / 20);
@@ -100,7 +101,7 @@ document.body.addEventListener('drop', async (event) => {
         if (file.type.startsWith('image/')) {
             const blob = new Blob([await file.arrayBuffer()], { type: file.type });
             const url = URL.createObjectURL(blob);
-            imagejs(url);
+            imagejs(url, localStorage.getItem('fastmark'));
         }
     }
 });
@@ -110,13 +111,25 @@ document.body.addEventListener('dragover', (event) => {
 });
 
 document.body.addEventListener('keydown', (event) => {
-    if (event.ctrlKey) {
+    if (event.ctrlKey && !params.has('previewInfo')) {
         localStorage.removeItem('fastmark');
         window.location.href = 'setup.html';
     }
 });
 
-if (localStorage.getItem('fastmark') == null) {
+if (localStorage.getItem('fastmark') == null && !params.has('previewInfo')) {
     window.alert('Welcome! Let\'s set up your FastMark settings.');
     window.location.href = 'setup.html';
+}
+else if (params.has('previewInfo')) {
+    document.querySelector(".gr").innerHTML = "<p>opening example...</p>";
+    fetch("example.jpg").then(response => response.blob())
+        .then(blob => {
+            const url = URL.createObjectURL(blob);
+            imagejs(url, (atob(params.get('previewInfo'))));
+        })
+        .catch(error => {
+            console.error('Error loading example image:', error);
+            document.body.innerHTML = "<p>Error loading example image.</p>";
+        });
 }
